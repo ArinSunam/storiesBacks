@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 //Register
@@ -24,18 +25,35 @@ router.post("/register", async (req, res) => {
 //Login
 
 router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
   try {
-    const user = await User.findOne({ username: req.body.username })
-    !user && res.status(400).json("Invalid Credentials!");
+    const isExist = await User.findOne({ username: username });
+    console.log('user exist', isExist)
+    if (isExist) {
+      const isPass = bcrypt.compareSync(password, isExist.password);
+      const token = jwt.sign({
+        id: isExist._id
+      }, 'jsonToken');
 
-    const validated = await bcrypt.compare(req.body.password, user.password)
-    !validated && res.status(400).json("Invalid Credentials!");
+      if (isPass)
+        return res.status(200).json({
+          id: isExist._id,
+          username,
+          token,
+          email: isExist.email
+        });
 
-    const { password, ...others } = user._doc;
+      return res.status(401).json('wrong credential');
 
-    res.status(200).json(others);
+
+    } else {
+      return res.status(401).json('invalid credential');
+    }
+
+
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    return res.status(400).json('wrong credential');
   }
 
 });
