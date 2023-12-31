@@ -5,8 +5,13 @@ const Post = require("../models/Post")
 
 //CREATE POST
 router.post("/", async (req, res) => {
+  const { title, content } = req.body;
 
-  const newPost = new Post(req.body);
+  if (!title || !content) {
+    return res.status(400).json({ error: "Title and content are  required!" })
+  }
+
+  const newPost = new Post(title, content);
   try {
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
