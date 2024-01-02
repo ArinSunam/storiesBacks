@@ -37,6 +37,6 @@ app.use("/api/categories", catRoute);
 
 
 
-app.listen("5000", () => {
+app.listen(5000, () => {
   console.log("Backend is running");
 })

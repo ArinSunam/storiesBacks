@@ -7,7 +7,7 @@ const PostSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
-    content: {
+    desc: {
       type: String,
       required: true,
 
@@ -20,10 +20,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    categories: {
-      type: Array,
-      required: false,
-    },
+    categories: [],
 
   },
   { timestamps: true }
