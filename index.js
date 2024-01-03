@@ -12,6 +12,7 @@ const cors = require("cors")
 app.use(cors());
 dotenv.config();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.json('Meow')
 });
