@@ -6,33 +6,28 @@ const authRoute = require("./routes/auth")
 const userRoute = require("./routes/users")
 const postRoute = require("./routes/posts")
 const catRoute = require("./routes/categories")
-const multer = require("multer")
+const fileUpload = require('express-fileupload');
 const cors = require("cors")
 
+app.use('/uploads', express.static('uploads'));
 app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({
+  limits: { fileSize: 5 * 1024 * 1024 },
+  abortOnLimit: true,
+
+}));
 app.get('/', (req, res) => {
   res.json('Meow')
 });
+
 
 mongoose.connect(process.env.MONGO_URL).then(() => console.log("DB connection successful")).catch((err) => {
   console.log(err);
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images")
-  }, fileName: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
-
-const upload = multer({ storage: storage });
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  res.status(200).json("File has been uploaded");
-});
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);

@@ -1,27 +1,35 @@
 const router = require("express").Router();
-const Post = require("../models/Post")
+const Post = require("../models/Post");
+const checkFile = require("../middlewares/file_check")
+
+
 
 
 
 //CREATE POST
-router.post("/", async (req, res) => {
-  const { title, desc } = req.body;
-  console.log(req.body);
-  if (!title || !desc) {
-    return res.status(400).json({ error: "Title and content are  required!" })
-  }
+router.post("/",
+  checkFile.fileCheck,
+  async (req, res) => {
+    const { title, desc, username } = req.body;
+    const photo = req.imagePath;
+    console.log(req.body);
+    console.log('photo', req.imagePath)
+    if (!title || !desc) {
+      return res.status(400).json({ error: "Title and content are  required!" })
+    }
 
 
-  try {
-    const savedPost = await Post.create(req.body);
-    res.status(200).json(savedPost);
-  } catch (error) {
-    res.status(500).json(error);
+    try {
+      const savedPost = await Post.create({ title, desc, photo, username });
+      res.status(200).json(savedPost);
+    } catch (error) {
+      res.status(500).json(error);
+      console.error('posting error', error)
 
-  }
+    }
 
 
-});
+  });
 //UPDATE POST
 router.put("/:id", async (req, res) => {
   try {
