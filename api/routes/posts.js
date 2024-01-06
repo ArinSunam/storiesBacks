@@ -31,28 +31,50 @@ router.post("/",
 
   });
 //UPDATE POST
-router.put("/:id", async (req, res) => {
+router.patch("/:id", checkFile.updateCheck, async (req, res) => {
+  const id = req.params.id
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(id);
     if (post.username === req.body.username) {
+
+
+      const {
+        title,
+        desc
+      } = req.body;
+      console.log('req body', req.body);
       try {
-        const updatedPost = await Post.findByIdAndUpdate(req.params.id,
-          {
-            $set: req.body,
-          },
-          { new: true }
-        );
-        res.status(200).json(updatedPost)
+        let updatedPost;
+        if (req.imagePath) {
+          updatedPost =
+            await Post.findByIdAndUpdate(id,
+              {
+                title,
+                desc,
+                photo: req.imagePath
+              });
+        } else {
+          updatedPost = await Post.findByIdAndUpdate(req.params.id, {
+            title,
+            desc
+          })
+
+        }
+        res.status(200).json('update Successful')
 
       } catch (err) {
-        res.status(500).json(err)
+        res.status(500).json(`${err}`);
+        console.log('err', err);
 
       }
     } else {
+      console.log('post username', post.username)
+      console.log('req username', req.body.username)
       res.status(401).json("You can update only your post!");
     }
   } catch (error) {
-    res.status(500).json(err)
+    res.status(500).json(error);
+    console.log('error update', error)
   }
 
 });
