@@ -33,6 +33,7 @@ router.post("/",
 //UPDATE POST
 router.patch("/:id", checkFile.updateCheck, async (req, res) => {
   const id = req.params.id
+
   try {
     const post = await Post.findById(id);
     if (post.username === req.body.username) {
@@ -42,19 +43,20 @@ router.patch("/:id", checkFile.updateCheck, async (req, res) => {
         title,
         desc
       } = req.body;
+
       console.log('req body', req.body);
       try {
-        let updatedPost;
+
         if (req.imagePath) {
-          updatedPost =
-            await Post.findByIdAndUpdate(id,
-              {
-                title,
-                desc,
-                photo: req.imagePath
-              });
+
+          await Post.findByIdAndUpdate(id,
+            {
+              title,
+              desc,
+              photo: req.imagePath
+            });
         } else {
-          updatedPost = await Post.findByIdAndUpdate(req.params.id, {
+          await Post.findByIdAndUpdate(req.params.id, {
             title,
             desc
           })
@@ -68,13 +70,13 @@ router.patch("/:id", checkFile.updateCheck, async (req, res) => {
 
       }
     } else {
-      console.log('post username', post.username)
-      console.log('req username', req.body.username)
+
+
       res.status(401).json("You can update only your post!");
     }
   } catch (error) {
     res.status(500).json(error);
-    console.log('error update', error)
+    console.log('meow update', error)
   }
 
 });
