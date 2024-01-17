@@ -8,7 +8,7 @@ const postRoute = require("./routes/posts")
 const catRoute = require("./routes/categories")
 const fileUpload = require('express-fileupload');
 const cors = require("cors")
-
+//apps
 app.use('/uploads', express.static('uploads'));
 app.use(cors());
 dotenv.config();
