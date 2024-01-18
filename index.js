@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGO_URL).then(() => console.log("DB connection successful")).catch((err) => {
+mongoose.connect("mongodb+srv://meow:hyamuji36@cluster0.krfewya.mongodb.net/").then(() => console.log("DB connection successful")).catch((err) => {
   console.log(err);
 });
 
