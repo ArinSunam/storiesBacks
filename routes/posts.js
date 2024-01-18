@@ -115,7 +115,7 @@ router.get("/:id", async (req, res) => {
 
 //GET ALL POSTS
 
-router.get("/", async (req, res) => {
+router.get("/api/posts", async (req, res) => {
   const username = req.query.user;
   const catName = req.query.cat;
 
