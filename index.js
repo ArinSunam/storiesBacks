@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.json('Meow')
 });
 
-
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URL).then(() => console.log("DB connection successful")).catch((err) => {
   console.log(err);
 });
