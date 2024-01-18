@@ -2,10 +2,10 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const authRoute = require("./routes/auth")
-const userRoute = require("./routes/users")
-const postRoute = require("./routes/posts")
-const catRoute = require("./routes/categories")
+const authRoute = require("./controllers/auth")
+const userRoute = require("./controllers/users")
+const postRoute = require("./controllers/posts")
+const catRoute = require("./controllers/categories")
 const fileUpload = require('express-fileupload');
 const cors = require("cors")
 //apps
@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URL).then(() => console.log("DB connection su
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
-app.use(postRoute);
+
 app.use("/api/categories", catRoute);
 
 
