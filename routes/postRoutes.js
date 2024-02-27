@@ -7,6 +7,6 @@ const notAllowed = (req, res) => res.status(405).json('method not allowed');
 
 router.route('/api/posts').get(getAllPosts).all(notAllowed);
 router.route('/api/posts/:id').get(getPost).delete(deletePost).patch(updateCheck, updatePost).all(notAllowed)
-router.route('/api/posts').post(fileCheck, createPost).all(notAllowed);
+router.route('/api/add-posts').post(fileCheck, createPost).all(notAllowed);
 
 module.exports = router;
